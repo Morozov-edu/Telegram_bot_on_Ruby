@@ -12,7 +12,7 @@ module UsersRequests
       when States::WAITING_MATRIX_1
         FSM.set_data(user_id, :matrix1, update.text)
         sign = FSM.get_data(user_id, :sign)
-        if sign == :mult_matrix_num 
+        if sign == :mult_matrix_num or sign == :div_scalar
           FSM.set(user_id, States::WAITING_SCALAR)
           bot.api.send_message(
             chat_id: update.chat.id,
@@ -45,7 +45,7 @@ module UsersRequests
               reply_markup: UsersKeyboards.back_to_main_with_res_kb
             )
         elsif sign == :div_scalar
-          div_n_result = division_matrix_by_scalar(matrix, scalar)
+          div_n_result = division_matrix_by_scalar(matrix1, scalar)
             bot.api.send_message(
               chat_id: update.chat.id,
               text: "Матрица 1:\n#{matrix1}\n\nСкаляр:\n#{scalar}\n\nРезультат:\n#{div_n_result}",
