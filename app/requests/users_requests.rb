@@ -44,6 +44,13 @@ module UsersRequests
               text: "Матрица 1:\n#{matrix1}\n\nСкаляр:\n#{scalar}\n\nРезультат:\n#{mult_n_result}",
               reply_markup: UsersKeyboards.back_to_main_with_res_kb
             )
+        elsif sign == :div_scalar
+          div_n_result = division_matrix_by_scalar(matrix, scalar)
+            bot.api.send_message(
+              chat_id: update.chat.id,
+              text: "Матрица 1:\n#{matrix1}\n\nСкаляр:\n#{scalar}\n\nРезультат:\n#{div_n_result}",
+              reply_markup: UsersKeyboards.back_to_main_with_res_kb
+            )
         end
 
       when States::WAITING_MATRIX_2
@@ -179,6 +186,16 @@ module UsersRequests
           reply_markup: UsersKeyboards.back_to_main_kb
         )
 
+      when 'division'
+        FSM.set(user_id, States::WAITING_MATRIX_1)
+        FSM.set_data(user_id, :sign, :div_scalar)
+
+        bot.api.edit_message_text(
+          chat_id: update.message.chat.id,
+          message_id: update.message.message_id,
+          text: "Введи первую матрицу в формате:\n[[1,2],[3,4]]",
+          reply_markup: UsersKeyboards.back_to_main_kb
+        )
 
       end
 

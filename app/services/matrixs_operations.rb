@@ -89,3 +89,9 @@ def multiply_matrix_by_scalar(matrix, scalar)
 rescue => e
     "Ошибка: #{e.message}"
 end
+
+def division_matrix_by_scalar(matrix, scalar)
+    matrix / scalar
+rescue => e
+    "Ошибка: #{e.message}"
+end
