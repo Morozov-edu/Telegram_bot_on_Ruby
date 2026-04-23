@@ -7,15 +7,59 @@ include Spectrix
 include Accesstrix
 
 def transfer_matrix(matrix_string)
-    cleaned_string = matrix_string.gsub(/\s+/, '').gsub(/[\[\]]/, '')
-    
-    rows = cleaned_string.split('],[')
+  begin
+    raise ArgumentError, "Input must be a String" unless matrix_string.is_a?(String)
 
-    matrix_data = rows.map do |data|
-        data.split(',').map(&:to_i)
+    # Убираем лишние пробелы по краям
+    str = matrix_string.strip
+
+    # Проверка, что это похоже на массив
+    unless str.start_with?('[') && str.end_with?(']')
+      raise ArgumentError, "Invalid matrix format"
+    end
+
+    # Пробуем безопасно распарсить строку
+    # Используем eval, но ограничиваем вход (только числа, запятые, скобки, минус)
+    unless str.match?(/\A[\[\]\d,\s\-]+\z/)
+      raise ArgumentError, "Matrix contains invalid characters"
+    end
+
+    data = eval(str)
+
+    # Проверка: массив ли это вообще
+    unless data.is_a?(Array)
+      raise ArgumentError, "Parsed data is not an array"
+    end
+
+    # Если одномерный массив — превращаем в матрицу-строку
+    if data.all? { |e| e.is_a?(Numeric) }
+      matrix_data = [data]
+    elsif data.all? { |row| row.is_a?(Array) }
+      # Проверка, что все элементы — числа
+      data.each do |row|
+        unless row.all? { |e| e.is_a?(Numeric) }
+          raise ArgumentError, "Matrix must contain only numbers"
+        end
+      end
+
+      # Проверка, что матрица прямоугольная
+      row_size = data.first.size
+      unless data.all? { |row| row.size == row_size }
+        raise ArgumentError, "Matrix rows must have одинаковую_длину"
+      end
+
+      matrix_data = data
+    else
+      raise ArgumentError, "Invalid matrix structure"
     end
 
     Matrix.new(matrix_data)
+
+  rescue SyntaxError
+    raise ArgumentError, "Invalid matrix syntax"
+  rescue => e
+    raise ArgumentError, "Error parsing matrix: #{e.message}"
+  end
 end
 
 
