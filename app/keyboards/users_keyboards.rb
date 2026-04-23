@@ -49,4 +49,15 @@ module UsersKeyboards
             ]
         )
     end
+
+    # Назад в главное меню (с резами)
+    def self.back_to_main_with_res_kb
+        Telegram::Bot::Types::InlineKeyboardMarkup.new(
+            inline_keyboard: [
+                [
+                    { text: 'Назад', callback_data: 'back_to_main_w_res' }
+                ]
+            ]
+        )
+    end
 end
