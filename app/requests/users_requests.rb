@@ -101,6 +101,16 @@ module UsersRequests
           text: 'Главное меню',
           reply_markup: UsersKeyboards.main_kb
         )
+      
+      when 'multiplication'
+        FSM.clear(user_id)
+
+        bot.api.edit_message_text(
+          chat_id: update.message.chat.id,
+          message_id: update.message.message_id,
+          text: 'Выберите тип умножения',
+          reply_markup: UsersKeyboards.main_multiplication_kb
+        )
       end
 
       bot.api.answer_callback_query(callback_query_id: update.id)
