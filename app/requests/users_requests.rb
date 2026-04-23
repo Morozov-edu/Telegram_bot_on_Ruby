@@ -30,6 +30,8 @@ module UsersRequests
 
         if sign == :plus
             sum_rezult = sum_matrices(matrix1, matrix2)
+        elsif sign == :minus
+            sum_rezult = subtract_matrices(matrix1, matrix2)
         end
 
         bot.api.send_message(
@@ -44,13 +46,22 @@ module UsersRequests
 
       # Обычные команды
       case update.text
+
       when '/start'
         bot.api.send_message(
           chat_id: update.chat.id,
           text: 'Главное меню',
           reply_markup: UsersKeyboards.main_kb
         )
+      
+      when '/help'
+        bot.api.send_message(
+          chat_id: update.chat.id,
+          text: "Этот бот предназначен для выполнения операций над матрицами. Выберите операцию в главном меню и следуйте инструкциям.",
+          reply_markup: UsersKeyboards.back_to_main_kb
+        )
       end
+
     end
 
     # CALLBACK
@@ -62,6 +73,17 @@ module UsersRequests
       when 'addition'
         FSM.set(user_id, States::WAITING_MATRIX_1)
         FSM.set_data(user_id, :sign, :plus)
+
+        bot.api.edit_message_text(
+          chat_id: update.message.chat.id,
+          message_id: update.message.message_id,
+          text: "Введи первую матрицу в формате:\n[[1,2],[3,4]]",
+          reply_markup: UsersKeyboards.back_to_main_kb
+        )
+      
+      when 'subtraction'
+        FSM.set(user_id, States::WAITING_MATRIX_1)
+        FSM.set_data(user_id, :sign, :minus)
 
         bot.api.edit_message_text(
           chat_id: update.message.chat.id,
