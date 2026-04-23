@@ -5,4 +5,5 @@ module States
     WAITING_MATRIX = :waiting_matrix
     WAITING_MATRIX_1 = :waiting_matrix_1
     WAITING_MATRIX_2 = :waiting_matrix_2
+    WAITING_SCALAR = :waiting_scalar
 end
