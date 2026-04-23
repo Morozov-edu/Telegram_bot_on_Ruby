@@ -1,15 +1,23 @@
+require 'mega_matrix'
+
+include MegaMatrix
+include Genetrix
+include Arifmetrix
+include Spectrix
+include Accesstrix
+
 def transfer_matrix(matrix_string)
     # Удаляем пробелы и скобки
     cleaned_string = matrix_string.gsub(/\s+/, '').gsub(/[\[\]]/, '')
     
     # Разделяем строки по запятой, учитывая вложенные массивы
     rows = cleaned_string.split('],[')
-    
+
     # Преобразуем строки в массивы чисел
-    matrix = rows.map do |row|
-        row.split(',').map(&:to_i)
-    end
-    
+    matrix = Matrix.new(rows.map do |data|
+        data.split(',').map(&:to_i)
+    end)
+
     matrix
 end
 
