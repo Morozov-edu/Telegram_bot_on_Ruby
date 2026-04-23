@@ -23,7 +23,7 @@ end
 
 
 def sum_matrices(matrix1, matrix2)
-    return nil unless matrix1.size == matrix2.size && matrix1[0].size == matrix2[0].size
+    return nil unless Matrix.matrix1.size == matrix2.size && matrix1[0].size == matrix2[0].size
     
     result = Array.new(matrix1.size) { Array.new(matrix1[0].size, 0) }
     
