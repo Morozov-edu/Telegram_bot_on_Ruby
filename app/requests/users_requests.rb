@@ -11,8 +11,8 @@ module UsersRequests
 
       when States::WAITING_MATRIX_1
         FSM.set_data(user_id, :matrix1, update.text)
-        FSM.get_data(user_id, :sign)
-        if sign == :waiting_scalar 
+        sign = FSM.get_data(user_id, :sign)
+        if sign == :mult_matrix_num 
           FSM.set(user_id, States::WAITING_SCALAR)
           bot.api.send_message(
             chat_id: update.chat.id,
@@ -34,7 +34,7 @@ module UsersRequests
         sign = FSM.get_data(user_id, :sign)
         matrix1 = FSM.get_data(user_id, :matrix1)
 
-        scalar = update.text
+        scalar = update.text.to_i
         matrix1 = transfer_matrix(matrix1)
 
         if sign == :mult_matrix_num
