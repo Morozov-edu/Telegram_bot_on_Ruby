@@ -33,3 +33,15 @@ rescue Arifmetrix::Error => e
     $stderr.puts "Ошибка вычитания: #{e.message}"
     nil
 end
+
+def multiply_matrices(matrix1, matrix2)
+    matrix1 * matrix2
+rescue Arifmetrix::Error => e
+    "Ошибка: #{e.message}"
+end
+
+def multiply_matrix_by_scalar(matrix, scalar)
+    matrix * scalar
+rescue => e
+    "Ошибка: #{e.message}"
+end
